@@ -17,18 +17,24 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function () {
-        // load the socket.io-client, which exposes a io global, and then connect.
-        // Notice that I’m not specifying any URL when I call io(), since it defaults to trying to connect to the host that serves the page.
-        var socket = io("http://localhost:3333");
+        // Connecting to a socket server out of this app:::
+        var socket = io("http://10.3.8.117:1111");
+
+        // With this function we can now just set one single event for a whole service
+        // Then we can emit and subscribe to any other channel without previous config.
+        var socket_sender = function(event, data){
+          socket.emit('test_events1', {"event": event, "info": data});
+        }
 
         $('form').submit(function(){
-          socket.emit('chat-message', $('#m').val());
+          // socket.emit('test_events1', {"event": "test_events_", "info": $('#m').val()});
+          socket_sender("test_events_", $('#m').val());
           $('#m').val('');
           return false;
         });
 
         // when we capture a chat message event we’ll include it in the page
-        socket.on('chat-message', function(msg){
+        socket.on('test_events_', function(msg){
           $('#messages').append($('<li>').text(msg));
         });
       });

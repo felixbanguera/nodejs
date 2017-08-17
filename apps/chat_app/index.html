@@ -19,7 +19,7 @@
       $(function () {
         // load the socket.io-client, which exposes a io global, and then connect.
         // Notice that I’m not specifying any URL when I call io(), since it defaults to trying to connect to the host that serves the page.
-        var socket = io();
+        var socket = io("http://10.3.8.117:1111");
 
         $('form').submit(function(){
           socket.emit('chat-message', $('#m').val());

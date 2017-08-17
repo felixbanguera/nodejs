@@ -20,19 +20,19 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
-  console.log('A user connected????');
-  socket.on('chat-message', function(msg){
-    console.log('message: ' + msg);
-    io.emit('chat-message', msg);
-  });
+// io.on('connection', function(socket){
+//   console.log('A user connected????');
+//   socket.on('chat-message', function(msg){
+//     console.log('message: ' + msg);
+//     io.emit('chat-message', msg);
+//   });
 
-  // send the message to everyone, including the sender.
-  socket.on('disconnect', function(){
-    console.log('A user disconnected');
-  });
-});
+//   // send the message to everyone, including the sender.
+//   socket.on('disconnect', function(){
+//     console.log('A user disconnected');
+//   });
+// });
 
-http.listen(3333, function(){
-  console.log('Listening on *:3333');
+http.listen(2222, function(){
+  console.log('Listening on *:2222');
 });

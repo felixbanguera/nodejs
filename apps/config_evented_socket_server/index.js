@@ -15,13 +15,20 @@ var config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 console.log("config", config.events);
 
+// data received from a configured event will have the form of
+// {"event": "chat-message", "info":"some text or object info"}
+// in order to receive and redirect all events wanted from external apps
 io.on('connection', function(socket){
-  console.log('A user connected????');
+  console.log('A connection  on socket server');
   config.events.forEach(function(event){
     console.log("will initialize event:", event);
     socket.on(event, function(data){
       console.log('message: ' + data);
-      io.emit(event, data);
+      if(data.event){
+        io.emit(data.event, data.info);
+      }else{
+        io.emit(event, data);
+      }
     });
   });
 
@@ -32,6 +39,6 @@ io.on('connection', function(socket){
   });
 });
 
-http.listen(3333, function(){
-  console.log('Listening on *:3333');
+http.listen(1111, function(){
+  console.log('Listening on *:1111');
 });
