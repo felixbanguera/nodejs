@@ -1,0 +1,9 @@
+{
+  "name": "blank-node-app",
+  "version": "0.0.1",
+  "description": "Blank node app to test other features",
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3"
+  }
+}

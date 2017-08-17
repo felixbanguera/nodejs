@@ -1,0 +1,7 @@
+{
+  "events": [
+    "event_1",
+    "event_2",
+    "chat-message"
+  ]
+}
