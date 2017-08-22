@@ -1,5 +1,5 @@
 /*
-Here the testing the use of pools to create an Infinite loop
+Here the testing the use of Threads to create an Infinite loop
 */
 function infinite_loop(i, continuu=true){
   console.log('infinite_loop');
