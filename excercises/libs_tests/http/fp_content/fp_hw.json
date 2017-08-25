@@ -1,0 +1,14 @@
+{
+  "devices":{
+    "001": {
+      "type": "mcp_expander",
+      "ip": "10.3.9.96",
+      "hw_id": "mcp1"
+    },
+    "002": {
+      "type": "mcp_expander",
+      "ip": "10.3.9.96",
+      "hw_id": "mcp2"
+    }
+  }
+}

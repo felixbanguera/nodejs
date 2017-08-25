@@ -1,0 +1,66 @@
+{
+    "0": {
+        "function": "OUT",
+        "value": 0
+    },
+    "1": {
+        "function": "OUT",
+        "value": 0
+    },
+    "2": {
+        "function": "OUT",
+        "value": 0
+    },
+    "3": {
+        "function": "OUT",
+        "value": 0
+    },
+    "4": {
+        "function": "OUT",
+        "value": 0
+    },
+    "5": {
+        "function": "OUT",
+        "value": 0
+    },
+    "6": {
+        "function": "IN",
+        "value": 0
+    },
+    "7": {
+        "function": "IN",
+        "value": 0
+    },
+    "8": {
+        "function": "OUT",
+        "value": 0
+    },
+    "9": {
+        "function": "OUT",
+        "value": 0
+    },
+    "10": {
+        "function": "OUT",
+        "value": 0
+    },
+    "11": {
+        "function": "OUT",
+        "value": 0
+    },
+    "12": {
+        "function": "OUT",
+        "value": 0
+    },
+    "13": {
+        "function": "OUT",
+        "value": 0
+    },
+    "14": {
+        "function": "IN",
+        "value": 0
+    },
+    "15": {
+        "function": "IN",
+        "value": 0
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "local_webiopi": {
+    "ip": "10.3.9.96",
+    "port": 8000,
+    "accepts_methods": ["GET", "POST"],
+    "headers": {
+      "Authorization": "Basic d2ViaW9waTpyYXNwYmVycnk="
+    }
+  },
+  "local_blank_app": {
+    "ip": "10.3.8.109",
+    "port": 4444,
+    "accepts_methods": ["GET", "POST"]
+  }
+}

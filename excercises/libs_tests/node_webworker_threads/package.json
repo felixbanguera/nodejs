@@ -1,8 +1,9 @@
 {
-  "name": "test node-webworker-threads",
+  "name": "test-node-webworker-threads",
   "version": "0.0.1",
-  "description": "test node-webworker-threads",
+  "description": "test-node-webworker-threads",
   "dependencies": {
+    "JASON": "^0.1.3",
     "node-gyp": "^3.6.2",
     "webworker-threads": "^0.7.12"
   }
