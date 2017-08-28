@@ -22,8 +22,8 @@ utils.do.configure_all_devices(fp_hw.devices);
 
 // Save all devices statuses
 // Run sensors validations
+// Subscribe to external events to post to webiopi
 
-// console.log('In fp_main.js', JSON.stringify(fp_hw));
 
 
 function basic_callback(status, body){
