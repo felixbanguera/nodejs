@@ -14,25 +14,15 @@ var webiopi = require('../webiopi.js');
 
 var methods = {};
 
-methods.configure_all_devices = function(config){
-  console.log(`configure_all_devices with: ${JSON.stringify(config)}`);
-  Object.entries(config).forEach(([dev_id, conf_data]) => {
-    try{
-      var fp_hw = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
-      // console.log(`${dev_id}'s status: ${JSON.stringify(fp_hw)}`);
-      Object.entries(fp_hw).forEach(([GPIO, status_data]) => {
-        // console.log(`${GPIO}: ${JSON.stringify(status_data)}`);
-        methods.change_GPIO_fn(conf_data.hw_id, GPIO, status_data.function, basic_callback)
-      });
-    }catch(e){
-      // if(e.include?('ENOENT')){
-      //   console.log(`The device ${dev_id} doesn't have config`);
-      // }else{
-        console.log(`\n FP_UTILS::configure_all_devices::${dev_id} - Error>>${e}`);
-      // }
-    }
-  });
+methods.configure_all_devices = function(devices){
+  console.log(`configure_all_devices with: ${JSON.stringify(devices)}`);
+  methods.iterateDevicesConfig(devices,getPinFuncAndSetupByDevice)
 };
+
+// methods.save_all_state_devices = function(devices){
+//   methods.iterateDevicesConfig(devices, getStatesInHwAndStoredByDevice)
+// };
+
 
 // To compare statuses
 methods.compare_n_notify = function(stored, arrived){
@@ -55,8 +45,9 @@ methods.change_GPIO_fn = function(device, GPIO, fn, callback=basic_callback){
 }
 
 // To save statuses in files corresponding to devices
-methods.save_new_state = function(new_jison){
-  console.log(`will save new values to ${JSON.stringify(new_jison)}`);
+methods.save_new_state = function(dev_id, new_json){
+  fs.writeFile(`${__dirname}/devices_status/${dev_id}.json`, JSON.stringify(new_json, null, 4));
+  console.log(`will save new values to ${JSON.stringify(new_json)}`);
 };
 
 // To notify changes to any sucribed service
@@ -72,4 +63,30 @@ function basic_callback(status, body){
   console.log(`Response: status code: ${status} and body: ${body}`);
 };
 
+methods.iterateDevicesConfig= function(devices, callbackPerDevice){
+  devices.map(([dev_id, conf_data]) => {
+     callbackPerDevice(dev_id, conf_data);
+  })
+}
+function getStatesInHwAndStoredByDevice(dev_id,conf_data){
+  webiopi.get.device_GPIO(conf_data.hw_id,function(statusCode, chunk){
+    if(statusCode === 200) methods.save_new_state(dev_id, JSON.parse(chunk))
+  });
+}
+function getPinFuncAndSetupByDevice(dev_id,conf_data){
+  try{
+    var fp_hw = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
+    Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
+      methods.change_GPIO_fn(conf_data.hw_id, GPIO, status_data.function, function(){
+        if(idx === array.length -1) getStatesInHwAndStoredByDevice(dev_id,conf_data);
+      })
+    });
+  }catch(e){
+    // if(e.include?('ENOENT')){
+    //   console.log(`The device ${dev_id} doesn't have config`);
+    // }else{
+      console.log(`\n FP_UTILS::configure_all_devices::${dev_id} - Error>>${e}`);
+    // }
+  }
+}
 exports.do = methods;
