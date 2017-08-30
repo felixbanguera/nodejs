@@ -14,13 +14,13 @@ var webiopi = require('../webiopi.js');
 
 var methods = {};
 
-methods.configure_all_devices = function(devices, callback){
+methods.configure_all_devices = function(devices){
   console.log(`configure_all_devices with: ${JSON.stringify(devices)}`);
-  methods.iterarDevicesConfig(devices,getPinFuncAndSetupByDevice)
+  methods.iterateDevicesConfig(devices,getPinFuncAndSetupByDevice)
 };
 
 // methods.save_all_state_devices = function(devices){
-//   methods.iterarDevicesConfig(devices, getStatesInHwAndStoredByDevice)
+//   methods.iterateDevicesConfig(devices, getStatesInHwAndStoredByDevice)
 // };
 
 
@@ -63,7 +63,7 @@ function basic_callback(status, body){
   console.log(`Response: status code: ${status} and body: ${body}`);
 };
 
-methods.iterarDevicesConfig= function(devices, callbackPerDevice){
+methods.iterateDevicesConfig= function(devices, callbackPerDevice){
   devices.map(([dev_id, conf_data]) => {
      callbackPerDevice(dev_id, conf_data);
   })
