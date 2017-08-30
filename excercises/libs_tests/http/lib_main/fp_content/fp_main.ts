@@ -24,6 +24,6 @@ utils.do.configure_all_devices(Object.entries(fp_hw.devices));
 // Run sensors validations
 // Subscribe to external events to post to webiopi
 
-function basic_callback(status, body){
-  console.log(`Response: status code: ${status} and body: ${body}`);
-};
+// function basic_callback(status, body){
+//   console.log(`Response: status code: ${status} and body: ${body}`);
+// };

@@ -1,0 +1,16 @@
+{
+  "name": "middleware_cop",
+  "version": "1.0.0",
+  "description": "middleware concept test",
+  "main": "main.js",
+  "scripts": {
+    "compile": "node_modules/.bin/tsc",
+    "start": "npm run compile && node dist/fp_content/fp_main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^8.0.26",
+    "typescript": "^2.4.2"
+  }
+}

@@ -25,11 +25,11 @@
     },
     "6": {
         "function": "IN",
-        "value": 0
+        "value": 1
     },
     "7": {
         "function": "IN",
-        "value": 0
+        "value": 1
     },
     "8": {
         "function": "OUT",

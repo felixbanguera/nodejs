@@ -3,8 +3,8 @@ var http_com = require('./http_comm_1.js');
 
 // var config = JSON.parse(fs.readFileSync('http_config.json', 'utf8'));
 const url = 'local_webiopi';
-var get_methods = {};
-var post_methods = {};
+var get_methods : any = {};
+var post_methods : any = {};
 
 get_methods.devices = function(callback){
   //example::: /devices/*

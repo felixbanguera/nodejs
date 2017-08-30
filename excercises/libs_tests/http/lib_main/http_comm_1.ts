@@ -1,8 +1,8 @@
 var fs = require('fs');
 var http = require('http');
-var config = JSON.parse(fs.readFileSync('http_config.json', 'utf8'));
+var config = JSON.parse(fs.readFileSync(__dirname + '/http_config.json', 'utf8'));
 
-var methods = {};
+var methods : any = {};
 
 function CREATE_OPTIONS(host, port, endpoint, method, headers){
   return {

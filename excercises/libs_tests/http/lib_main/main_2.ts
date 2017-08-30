@@ -67,6 +67,6 @@ var interval1 = setInterval(function() {
 
 
 
-function basic_callback(status, body){
-  console.log(`Response: status code: ${status} and body: ${body}`);
-};
+// function basic_callback(status, body){
+//   console.log(`Response: status code: ${status} and body: ${body}`);
+// };
