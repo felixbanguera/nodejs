@@ -12,38 +12,44 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+const util = require('util');
 
-var Rx   = require("./rx.node");
+var Rx = require('rx');
+// var Rx   = require("./rx.node");
 var http = require("http");
 for(var k in http) {
-	exports[k] = http[k];
+    exports[k] = http[k];
 }
 exports.createServer = function() {
     var subject = new Rx.AsyncSubject(),
-    handler = handler = function(request, response) {
+    handler = function(request, response) {
         subject.onNext( { request: request, response:  response });
         subject.onCompleted();
     },
-	observable = subject.asObservable();
+    observable = subject.asObservable();
     observable.server = http.createServer(handler);
-	return observable;
+    return observable;
 };
 exports.request = function(options) {
+    console.log(`rx_http::request::`);
     var subject = new Rx.AsyncSubject(),
-    handler = handler = function (response) {
+    handler = function (response) {
+        console.log(`response in handlere : ${response}`);
         subject.onNext(response);
         subject.onCompleted();
     },
     errHandler = function (err) {
         subject.onError(err);
-    },    
+    },
     observable = subject.asObservable();
-    observable.request = http.request(options, handler).on('error', errHandler);
+    observable.request = http.get(options, handler).on('error', errHandler);
+    console.log(`rx_http::request::observable.request:`);
     return observable;
 };
 exports.get = function (options) {
     var subject = new Rx.AsyncSubject(),
-    handler = handler = function (response) {
+    handler = function (response) {
+        console.log('The handler');
         subject.onNext(response);
         subject.onCompleted();
     },

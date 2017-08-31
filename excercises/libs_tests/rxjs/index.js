@@ -10,6 +10,8 @@ const http_com = require('./http_com.js');
 
 const postData = "\{'msg': 'Hello World!'\}";
 
+const util = require('util');
+
 const subject = new Rx.Subject();
 
 /*
@@ -28,7 +30,7 @@ function subject_callback(status, body){
 };
 */
 
-
+/*
 // This attempt is to manually use rxjs sendig the RX.subject as parameter
 console.log('Running http_get to blank app using RX.subject object as parameter');
 var req_get = http_com.get.request_with_subject('local_blank_app', '/getty', null, null, subject);
@@ -38,8 +40,14 @@ req_get.end();
 subject.subscribe((data) => {
   console.log(`from subject::  status: ${data.status}, body: ${data.body}`);
 });
+*/
 
+/*
+//  ------ The following is not working fine, the lib seems to be deprecated
+// The following to use an rx http lib from: https://github.com/Reactive-Extensions/rxjs-node
+var obs_get = http_com.get.observable_request('local_blank_app', '/getty', null, null);
 
-
-// // The following to use an rx http lib from: https://github.com/Reactive-Extensions/rxjs-node
-// const rx_http = require('./rx-node-master/lib/rx-http.js');
+obs_get.subscribe((data) => {
+  console.log(`Suscription to observable::: ${util.inspect(data)}`)
+});
+*/

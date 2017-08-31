@@ -61,6 +61,15 @@ methods.request_with_subject = function(conf, path, method, headers, subject){
   return req;
 }
 
+// This method to return an observable using the rx_http lib from: https://github.com/Reactive-Extensions/rxjs-node
+const rx_http = require('./rxjs-node-master/lib/rx_http.js');
+methods.observable_request = function(conf, path, method, headers){
+  var options = OPTS_WITH_CONF({conf: conf, path: path, method: method});
+  var req = rx_http.get(options);
+  console.log(`http_com::observable_request:: req: ${req}`);
+  return req;
+}
+
 // Exporting the methods with the module.exports library???
 /*
   module.exports is a Node.js specific feature, it does not work with regular JavaScript
