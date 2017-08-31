@@ -1,0 +1,8 @@
+{
+  "name": "rx-node-test",
+  "version": "0.0.1",
+  "description": "Running connection of http using rx for node",
+  "dependencies": {
+    "rx": "^4.1.0"
+  }
+}
