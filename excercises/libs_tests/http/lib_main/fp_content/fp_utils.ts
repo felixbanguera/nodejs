@@ -12,7 +12,7 @@ var eventEmitter = new events.EventEmitter();
 
 var webiopi = require('../webiopi.js');
 
-var methods = {};
+var methods : any = {};
 
 methods.configure_all_devices = function(devices){
   console.log(`configure_all_devices with: ${JSON.stringify(devices)}`);
@@ -30,12 +30,12 @@ methods.compare_n_notify = function(stored, arrived){
   Object.entries(stored).forEach(
     ([pos_id, data]) => {
       if(data.function == 'IN' && (data.value != arrived[pos_id].value)) {
-        notify_in_changed(pos_id, arrived[pos_id].value);
+        methods.notify_in_changed(pos_id, arrived[pos_id].value);
         changed = true;
       }
     }
   );
-  if(changed) save_new_state(arrived);
+  if(changed) methods.save_new_state(arrived);
 };
 
 // To change function of GPIO in webiopi
@@ -56,10 +56,6 @@ methods.notify_in_changed = function(pos_id, value){
 };
 
 methods.basic_callback = function(status, body){
-  console.log(`Response: status code: ${status} and body: ${body}`);
-};
-
-function basic_callback(status, body){
   console.log(`Response: status code: ${status} and body: ${body}`);
 };
 

@@ -15,6 +15,6 @@ var eventEmitter = new events.EventEmitter();
 
 var webiopi = require('./fp_content/fp_main.js');
 
-function basic_callback(status, body){
-  console.log(`Response: status code: ${status} and body: ${body}`);
-};
+// function basic_callback(status, body){
+//   console.log(`Response: status code: ${status} and body: ${body}`);
+// };
