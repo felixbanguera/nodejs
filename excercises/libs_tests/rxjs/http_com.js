@@ -21,18 +21,33 @@ function OPTS_WITH_CONF(args){
   let headers = args.headers ? args.headers : conf.headers;
   return CREATE_OPTIONS(conf.ip, conf.port, args.path, method, headers);
 }
-
+// This method creates a request and uses a callback parameter to execute on('data')
 methods.request_with_callback = function(conf, path, method, headers, callback){
   var options = OPTS_WITH_CONF({conf: conf, path: path, method: method});
-  // console.log(`:options::: ${JSON.stringify(options)}`);
-
   var req = http.request(options, (res) => {
-    // console.log(`STATUS: ${res.statusCode}`);
-    // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
     res.setEncoding('utf8');
     res.on('data', (chunk) => {
-      // console.log(`BODY: ${chunk}`);
       callback(res.statusCode, chunk);
+    });
+    res.on('end', () => {
+      console.log('No more data in response.');
+    });
+  });
+
+  req.on('error', (e) => {
+    console.error(`problem with request: ${e.message}`);
+  });
+
+  return req;
+}
+
+// This method creates a request and uses a RX.subject parameter to execute on('data')
+methods.request_with_callback = function(conf, path, method, headers, subject){
+  var options = OPTS_WITH_CONF({conf: conf, path: path, method: method});
+  var req = http.request(options, (res) => {
+    res.setEncoding('utf8');
+    res.on('data', (chunk) => {
+      subject.onNext({status: res.statusCode, body: chunk});
     });
     res.on('end', () => {
       console.log('No more data in response.');
