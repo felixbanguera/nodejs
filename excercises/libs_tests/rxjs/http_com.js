@@ -42,7 +42,7 @@ methods.request_with_callback = function(conf, path, method, headers, callback){
 }
 
 // This method creates a request and uses a RX.subject parameter to execute on('data')
-methods.request_with_callback = function(conf, path, method, headers, subject){
+methods.request_with_subject = function(conf, path, method, headers, subject){
   var options = OPTS_WITH_CONF({conf: conf, path: path, method: method});
   var req = http.request(options, (res) => {
     res.setEncoding('utf8');
