@@ -1,5 +1,3 @@
-
-
 import  *  as fs from 'fs';
 import {HttpComunication} from './http_comm_1.js';
 
@@ -16,11 +14,9 @@ export class WebIOPi extends HttpComunication{
     req_get.write('');
     req_get.end();
   };
-  getDevice_GPIO(device_name: string, callback): void{
+  getDevice_GPIO(device_name: string){
     //example::: /devices/mcp1/*
-    var req_get = this.request(this.url, `/devices/${device_name}/*`, null, null, callback);
-    req_get.write('');
-    req_get.end();
+    return this.GET(this.url, `/devices/${device_name}/*`);
   };
 
   getDevice_GPIO_val(device_name: string, GPIO_ID: number, callback): void{
@@ -30,12 +26,10 @@ export class WebIOPi extends HttpComunication{
     req_get.end();
   };
   /* POST */
-  setDevice_GPIO_fn(device_name: string, GPIO_ID: number, in_out: string, callback): void{
+  setDevice_GPIO_fn(device_name: string, GPIO_ID: number, in_out: string){
     //example::: /devices/mcp1/0/function/OUT
     var in_out = in_out.toUpperCase();
-    var req_get = this.request(this.url, `/devices/${device_name}/${GPIO_ID}/function/${in_out}`, 'POST', null, callback);
-    req_get.write('');
-    req_get.end();
+    return this.POST(this.url, `/devices/${device_name}/${GPIO_ID}/function/${in_out}`, 'POST', null, {});
   }
   setDevice_GPIO_val(device_name: string, GPIO_ID: number, val: number, callback): void{
     //example::: /devices/mcp1/0/value/1
