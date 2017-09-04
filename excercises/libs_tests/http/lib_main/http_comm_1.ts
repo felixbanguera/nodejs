@@ -9,7 +9,7 @@ interface config{
 }
 
 export class HttpComunication {
-  private config : Array<config> = JSON.parse(fs.readFileSync(__dirname + '/http_config.json', 'utf8'));
+  private config : Array<config>;
   
   constructor(){
     this.config = JSON.parse(fs.readFileSync(__dirname + '/http_config.json', 'utf8'));
