@@ -6,19 +6,18 @@ In this file:
 */
 
 // To communicate through events???
-var fs = require('fs');
-var events = require('events');
-var webiopi = require('../webiopi.js');
-var utils = require('./fp_utils.js');
+import  *  as fs from 'fs';
 
-var eventEmitter = new events.EventEmitter();
+import {Utils} from './fp_utils.js';
+
+const utils = new Utils();
 
 // Get the devices and config data
 var fp_hw = JSON.parse(fs.readFileSync(__dirname+'/fp_hw.json', 'utf8'));
 
 // *****Configure all devices GPIO*****
 // *****Save all devices statuses*****
-utils.do.configure_all_devices(Object.entries(fp_hw.devices)); 
+utils.configure_all_devices(Object.entries(fp_hw.devices)); 
 
 
 // Run sensors validations
