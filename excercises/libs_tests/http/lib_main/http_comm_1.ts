@@ -10,10 +10,11 @@ interface config{
 
 export class HttpComunication {
   private config : Array<config>;
-  
+
   constructor(){
     this.config = JSON.parse(fs.readFileSync(__dirname + '/http_config.json', 'utf8'));
   }
+
   request(conf, path, method, headers, callback){
     const options = this.OptsWithConf({conf, path, method});
     console.log(`:options::: ${JSON.stringify(options)}`);
@@ -56,24 +57,25 @@ export class HttpComunication {
     return this.CreateOptions(conf.ip, conf.port, args.path, method, headers);
   }
   // This method to return an observable using the rx-http-request from: rx-http-request
-  public GET(conf, path, method, headers){
-    let options = this.OptsWithConf({conf: conf, path: path, method: method});
-    let url = `http://${options.hostname}:${options.port}${options.path}`;
+  public GET(conf, path){
+    const options = this.OptsWithConf({conf: conf, path: path});
+    const url = `http://${options.hostname}:${options.port}${options.path}`;
     console.log(`URRRRLLLLL: ${url}`);
-    let req = RxHttpRequest.get(url);
+    const options_ = { headers: options.headers }
+    const req = RxHttpRequest.get(url, options_);
     return req;
   }
 
   // This method to return an observable using the rx-http-request from: rx-http-request
   public POST(conf, path, method, headers, body){
-    let options = this.OptsWithConf({conf: conf, path: path, method: method});
-    let url = `http://${options.hostname}:${options.port}${options.path}`;
+    const options = this.OptsWithConf({conf: conf, path: path, method: method});
+    const url = `http://${options.hostname}:${options.port}${options.path}`;
     console.log(`URRRRLLLLL: ${url}`);
     const options_ = {
       body: body,
       json: true // Automatically stringifies the body to JSON
     };
-    let req = RxHttpRequest.post(url, options_);
+    const req = RxHttpRequest.post(url, options_);
     return req;
   }
 }
