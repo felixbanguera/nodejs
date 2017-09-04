@@ -1,5 +1,6 @@
 import  *  as fs from 'fs';
 import * as http from 'http';
+import {RxHttpRequest} from 'rx-http-request';
 interface config{
   ip:string,
   port: number,
@@ -9,7 +10,7 @@ interface config{
 
 export class httpComunication {
   private config : Array<config>;
-  public 
+  public
   constructor(){
     this.config = JSON.parse(fs.readFileSync(__dirname + '/http_config.json', 'utf8'));
   }
@@ -54,44 +55,25 @@ export class httpComunication {
     const headers : any  = args.headers ? args.headers : conf.headers;
     return this.CreateOptions(conf.ip, conf.port, args.path, method, headers);
   }
+  // This method to return an observable using the rx-http-request from: rx-http-request
+  public GET(conf, path, method, headers){
+    let options = this.OptsWithConf({conf: conf, path: path, method: method});
+    let url = `http://${options.hostname}:${options.port}${options.path}`;
+    console.log(`URRRRLLLLL: ${url}`);
+    let req = RxHttpRequest.get(url);
+    return req;
+  }
+
+  // This method to return an observable using the rx-http-request from: rx-http-request
+  public POST(conf, path, method, headers, body){
+    let options = this.OptsWithConf({conf: conf, path: path, method: method});
+    let url = `http://${options.hostname}:${options.port}${options.path}`;
+    console.log(`URRRRLLLLL: ${url}`);
+    const options_ = {
+      body: body,
+      json: true // Automatically stringifies the body to JSON
+    };
+    let req = RxHttpRequest.post(url, options_);
+    return req;
+  }
 }
-
-
-// var methods : any = {};
-
-
-
-// methods.http_config = function(){
-//   console.log("config", OPTS_WITH_CONF('local_blank_app', '/getty'));
-// }
-
-// methods.request = function(conf, path, method, headers, callback){
-//   var options = OPTS_WITH_CONF({conf: conf, path: path, method: method});
-//   console.log(`:options::: ${JSON.stringify(options)}`);
-
-//   var req = http.request(options, (res) => {
-//     console.log(`STATUS: ${res.statusCode}`);
-//     console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-//     res.setEncoding('utf8');
-//     res.on('data', (chunk) => {
-//       console.log(`BODY: ${chunk}`);
-//       callback(res.statusCode, chunk);
-//     });
-//     res.on('end', () => {
-//       console.log('No more data in response.');
-//     });
-//   });
-
-//   req.on('error', (e) => {
-//     console.error(`problem with request: ${e.message}`);
-//   });
-
-//   return req;
-// }
-
-// Exporting the methods with the module.exports library???
-/*
-  module.exports is a Node.js specific feature, it does not work with regular JavaScript
-*/
-// exports.get = methods;
-
