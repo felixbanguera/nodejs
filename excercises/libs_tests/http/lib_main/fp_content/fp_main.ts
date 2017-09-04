@@ -22,10 +22,19 @@ var fp_hw = JSON.parse(fs.readFileSync(__dirname+'/fp_hw.json', 'utf8'));
 // *****Save all devices statuses*****
 utils.configure_all_devices(Object.entries(fp_hw));
 
-
 // Run sensors validations
-// Subscribe to external events to post to webiopi
+// ++++ create Class InputHandler
+//      ++++++ Intialize with fp_hw config
+//      ++++++ Create method Run for interval inputs
+//      ++++++ create method notify on change -^ and save
 
-// function basic_callback(status, body){
-//   console.log(`Response: status code: ${status} and body: ${body}`);
-// };
+
+// Subscribe to external events to post to webiopi
+//  ++++++ create socket connection config
+//  ++++++ create socket_comm lib
+//  ++++++ create method: subcribe_to_change_outputs events
+//        +++++++ Post depending on data received
+//                +++++++ Save new states
+
+
+
