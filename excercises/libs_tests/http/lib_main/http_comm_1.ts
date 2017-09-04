@@ -60,7 +60,6 @@ export class HttpComunication {
   public GET(conf, path){
     const options = this.OptsWithConf({conf: conf, path: path});
     const url = `http://${options.hostname}:${options.port}${options.path}`;
-    console.log(`URRRRLLLLL: ${url}`);
     const options_ = { headers: options.headers }
     const req = RxHttpRequest.get(url, options_);
     return req;
@@ -70,7 +69,6 @@ export class HttpComunication {
   public POST(conf, path, method, headers, body){
     const options = this.OptsWithConf({conf: conf, path: path, method: method});
     const url = `http://${options.hostname}:${options.port}${options.path}`;
-    console.log(`URRRRLLLLL: ${url}`);
     const options_ = {
       body: body,
       json: true // Automatically stringifies the body to JSON

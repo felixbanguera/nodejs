@@ -60,7 +60,6 @@ export class Utils{
   getStatesInHwAndStoredByDevice(dev_id,conf_data){
     this.webiopi.getDevice_GPIO(conf_data.hw_id)
     .subscribe((data) => {
-      console.log(`------- statusCode: ${JSON.stringify(data)}`);
       if(data.response.statusCode === 200) this.save_new_state(dev_id, JSON.parse(data.response.body))
     });
   }
