@@ -1,6 +1,9 @@
-var fs = require('fs');
-var http_com = require('./http_comm_1.js');
 
+
+import  *  as fs from 'fs';
+import {httpComunication} from './http_comm_1.js';
+
+const http_com = new httpComunication();
 // var config = JSON.parse(fs.readFileSync('http_config.json', 'utf8'));
 const url = 'local_webiopi';
 var get_methods : any = {};
@@ -8,28 +11,28 @@ var post_methods : any = {};
 
 get_methods.devices = function(callback){
   //example::: /devices/*
-  var req_get = http_com.get.request(url, `/devices/*`, null, null, callback);
+  var req_get = http_com.request(url, `/devices/*`, null, null, callback);
   req_get.write('');
   req_get.end();
 };
 
 get_methods.device_GPIO = function(device_name, callback){
   //example::: /devices/mcp1/*
-  var req_get = http_com.get.request(url, `/devices/${device_name}/*`, null, null, callback);
+  var req_get = http_com.request(url, `/devices/${device_name}/*`, null, null, callback);
   req_get.write('');
   req_get.end();
 };
 
 get_methods.device_GPIO_val = function(device_name, GPIO_ID, callback){
   //example::: /devices/mcp1/0/value
-  var req_get = http_com.get.request(url, `/devices/${device_name}/${GPIO_ID}/value`, null, null, callback);
+  var req_get = http_com.request(url, `/devices/${device_name}/${GPIO_ID}/value`, null, null, callback);
   req_get.write('');
   req_get.end();
 };
 
 // get_methods.device_GPIO = function(device_name, callback){
 //  //example::: /devices/mcp1/*
-//   var req_get = http_com.get.request(url, `/devices/${device_name}/*`, null, null, callback);
+//   var req_get = http_com.request(url, `/devices/${device_name}/*`, null, null, callback);
 //   req_get.write('');
 //   req_get.end();
 // };
@@ -45,7 +48,7 @@ args:
 post_methods.device_GPIO_fn = function(device_name, GPIO_ID, in_out, callback){
   //example::: /devices/mcp1/0/function/OUT
   var in_out = in_out.toUpperCase();
-  var req_get = http_com.get.request(url, `/devices/${device_name}/${GPIO_ID}/function/${in_out}`, 'POST', null, callback);
+  var req_get = http_com.request(url, `/devices/${device_name}/${GPIO_ID}/function/${in_out}`, 'POST', null, callback);
   req_get.write('');
   req_get.end();
 }
@@ -62,7 +65,7 @@ post_methods.device_GPIO_val = function(device_name, GPIO_ID, val, callback){
   //example::: /devices/mcp1/0/value/1
   let path = `/devices/${device_name}/${GPIO_ID}/value/${val}`;
   console.log(`path:::: ${path}`);
-  let req_get = http_com.get.request(url, path, 'POST', null, callback);
+  let req_get = http_com.request(url, path, 'POST', null, callback);
   req_get.write('');
   req_get.end();
 }
