@@ -43,7 +43,7 @@ subject.subscribe((data) => {
 */
 
 /*
-//  ------ The following is not working fine, the lib seems to be deprecated
+//  ------ The following is NOT working fine, the lib seems to be deprecated --------
 // The following to use an rx http lib from: https://github.com/Reactive-Extensions/rxjs-node
 var obs_get = http_com.get.observable_request('local_blank_app', '/getty', null, null);
 
@@ -51,3 +51,32 @@ obs_get.subscribe((data) => {
   console.log(`Suscription to observable::: ${util.inspect(data)}`)
 });
 */
+
+/*
+// The following to try to use rx-http-request from: rx-http-request
+var obs_get = http_com.get.RxHtt_observable_request('local_blank_app', '/getty', 'get', null);
+var obs_post = http_com.get.RxHtt_observable_request('local_blank_app', '/posty', 'POST', null);
+
+obs_post.subscribe((data) => {
+  console.log(`Suscription to observable POST ::: ${util.inspect(data.body)}`)
+});
+obs_get.subscribe((data) => {
+  console.log(`Suscription to observable GET ::: ${util.inspect(data.body)}`)
+});
+*/
+
+// The following to try to use rx-http-request in rx_http_com.js
+const rx_http_com = require('./rx_http_com.js');
+var obs_get = rx_http_com.get('local_blank_app', '/getty', 'get', null);
+var obs_post = rx_http_com.post('local_blank_app', '/posty', 'POST', null, {name: 'felix', id: 111});
+
+obs_post.subscribe((data) => {
+  console.log(`Suscription to observable POST ::: ${util.inspect(data.body)}`)
+}, (err) => {
+  console.log(`ERROR to observable POST ::: ${util.inspect(err.message)}`)
+});
+obs_get.subscribe((data) => {
+  console.log(`Suscription to observable GET ::: ${util.inspect(data.body)}`)
+}, (err) => {
+  console.log(`ERROR to observable GET ::: ${util.inspect(err.message)}`)
+});

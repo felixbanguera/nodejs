@@ -6,7 +6,7 @@ var methods = {};
 
 function CREATE_OPTIONS(host, port, endpoint, method, headers){
   return {
-    hostname: host || 80,
+    hostname: host || 'localhost',
     port: port || 80,
     path: endpoint || '/',
     method: method || 'GET',
@@ -62,11 +62,40 @@ methods.request_with_subject = function(conf, path, method, headers, subject){
 }
 
 // This method to return an observable using the rx_http lib from: https://github.com/Reactive-Extensions/rxjs-node
+// ------- THIS one is NOT working "!!!"- - ---
 const rx_http = require('./rxjs-node-master/lib/rx_http.js');
 methods.observable_request = function(conf, path, method, headers){
   var options = OPTS_WITH_CONF({conf: conf, path: path, method: method});
   var req = rx_http.get(options);
   console.log(`http_com::observable_request:: req: ${req}`);
+  return req;
+}
+
+// This method to return an observable using the rx-http-request from: rx-http-request
+const util = require('util');
+const rxhttpreq = require('rx-http-request').RxHttpRequest;
+methods.RxHtt_observable_request = function(conf, path, method, headers){
+  var options = OPTS_WITH_CONF({conf: conf, path: path, method: method});
+  let url = `http://${options.hostname}:${options.port}${options.path}`;
+  console.log(`URRRRLLLLL: ${url}`);
+  const options_ = {
+      body: {
+          some: 'payload'
+      },
+      json: true // Automatically stringifies the body to JSON
+  };
+  let mthd = options.method.toUpperCase();
+  switch(mthd) {
+    case 'GET':
+      var req = rxhttpreq.get(url);
+      break;
+    case 'POST':
+      var req = rxhttpreq.post(url, options_);
+      break;
+    default:
+      throw "Not defined Method"
+  }
+
   return req;
 }
 

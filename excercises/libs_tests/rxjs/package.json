@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Running connection of http using rx for node",
   "dependencies": {
-    "rx": "^4.1.0"
+    "rx": "^4.1.0",
+    "rx-http-request": "^1.2.0"
   }
 }
