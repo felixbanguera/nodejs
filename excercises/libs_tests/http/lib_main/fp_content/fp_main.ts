@@ -11,8 +11,6 @@ import  *  as fs from 'fs';
 import {Utils} from './fp_utils.js';
 import {Configs} from './configs.js';
 
-const test = new Configs();
-
 const utils = new Utils();
 
 // Get the devices and config data
@@ -35,6 +33,12 @@ utils.configure_all_devices(Object.entries(fp_hw));
 //  ++++++ create method: subcribe_to_change_outputs events
 //        +++++++ Post depending on data received
 //                +++++++ Save new states
+utils.listenToChangeOutput();
 
+// import {SocketComunication} from '../socket_comm_1.js';
 
+// const io = new SocketComunication();
 
+// io.onConnect().subscribe((data) => {
+//   console.info("Someone got connectedddddddd");
+// });
