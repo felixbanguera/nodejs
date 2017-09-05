@@ -13,28 +13,28 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script>
       $(function () {
         // Connecting to a socket server out of this app:::
-        var socket = io("http://10.3.8.117:1111");
+        var socket = io("http://localhost:1111/example_name2");
 
         // With this function we can now just set one single event for a whole service
         // Then we can emit and subscribe to any other channel without previous config.
         var socket_sender = function(event, data){
-          socket.emit('test_events1', {"event": event, "info": data});
+          socket.emit('chat-message', {"event": event, "info": data});
         }
 
         $('form').submit(function(){
           // socket.emit('test_events1', {"event": "test_events_", "info": $('#m').val()});
-          socket_sender("test_events_", $('#m').val());
+          socket_sender("chat-message", $('#m').val());
           $('#m').val('');
           return false;
         });
 
         // when we capture a chat message event we’ll include it in the page
-        socket.on('test_events_', function(msg){
+        socket.on('chat-message', function(msg){
           $('#messages').append($('<li>').text(msg));
         });
       });
