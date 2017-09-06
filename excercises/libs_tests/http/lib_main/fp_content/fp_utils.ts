@@ -25,17 +25,18 @@ export class Utils{
     });
   }
   // To compare statuses
-  compare_n_notify(stored, arrived){
-    var changed = false;
-    Object.entries(stored).forEach(
-      ([pos_id, data]) => {
-        if(data.function == 'IN' && (data.value != arrived[pos_id].value)) {
-          this.notify_in_changed(pos_id, arrived[pos_id].value);
-          changed = true;
-        }
-      }
-    );
-    //if (changed) this.save_new_state(arrived);
+  compare_n_notify(dev_id,stored, arrived){
+    console.log(`compare_n_notify:::'stored= ${JSON.stringify(stored)},arrived= ${JSON.stringify(arrived)}`)
+    // var changed = false;
+    // Object.entries(stored).forEach(
+    //   ([pos_id, data]) => {
+    //     if(data.functiond == 'IN' && (data.value != arrived[pos_id].value)) {
+    //       this.notify_in_changed(pos_id, arrived[pos_id].value);
+    //       changed = true;
+    //     }
+    //   }
+    // );
+    // if (changed) this.save_new_state(dev_id,arrived);
   }
 
   // To change function of GPIO in webiopi
@@ -68,9 +69,9 @@ export class Utils{
     try{
       var fp_hw = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
       Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
-        this.change_GPIO_fn(conf_data.hw_id, GPIO, status_data.function)
+        this.change_GPIO_fn(conf_data.hw_id, GPIO, status_data.functiond)
         .subscribe(() => {
-          if(idx === array.length -1){
+          if(idx === array.length -1){  
             this.getStatesInHwAndStoredByDevice(dev_id,conf_data)
           }
         })

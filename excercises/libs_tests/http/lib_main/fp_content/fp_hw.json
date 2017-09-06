@@ -1,12 +1,7 @@
 {
   "001": {
     "type": "mcp_expander",
-    "ip": "10.3.8.113",
+    "ip": "10.3.9.109",
     "hw_id": "mcp1"
-  },
-  "002": {
-    "type": "mcp_expander",
-    "ip": "10.3.8.113",
-    "hw_id": "mcp2"
   }
 }

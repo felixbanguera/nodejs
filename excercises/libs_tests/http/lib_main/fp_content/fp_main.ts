@@ -10,6 +10,7 @@ import  *  as fs from 'fs';
 
 import {Utils} from './fp_utils.js';
 import {Configs} from './configs.js';
+import {SensorsHandler} from './sensors_handler.js';
 
 const test = new Configs();
 
@@ -28,7 +29,8 @@ utils.configure_all_devices(Object.entries(fp_hw));
 //      ++++++ Create method Run for interval inputs
 //      ++++++ create method notify on change -^ and save
 
-
+const sensorsHandler = new SensorsHandler();
+sensorsHandler.runSensors(Object.entries(fp_hw));
 // Subscribe to external events to post to webiopi
 //  ++++++ create socket connection config
 //  ++++++ create socket_comm lib

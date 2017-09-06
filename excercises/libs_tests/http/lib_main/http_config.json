@@ -1,6 +1,6 @@
 {
   "local_webiopi": {
-    "ip": "10.3.8.113",
+    "ip": "10.3.9.109",
     "port": 8000,
     "accepts_methods": ["GET", "POST"],
     "headers": {
