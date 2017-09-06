@@ -10,7 +10,7 @@ interface config{
 
 export class HttpComunication {
   private config : Array<config>;
-
+  private TIMEOUT = 5000;
   constructor(){
     this.config = JSON.parse(fs.readFileSync(__dirname + '/http_config.json', 'utf8'));
   }
@@ -62,18 +62,20 @@ export class HttpComunication {
     const url = `http://${options.hostname}:${options.port}${options.path}`;
     const options_ = { headers: options.headers }
     const req = RxHttpRequest.get(url, options_);
-    return req;
+    return req.timeout(this.TIMEOUT);
   }
 
   // This method to return an observable using the rx-http-request from: rx-http-request
   public POST(conf, path, method, headers, body){
     const options = this.OptsWithConf({conf: conf, path: path, method: method});
     const url = `http://${options.hostname}:${options.port}${options.path}`;
+    console.log(`:;;;;;;;;;;>>>> ${url}`);
     const options_ = {
       body: body,
-      json: true // Automatically stringifies the body to JSON
+      json: true,
+      headers: options.headers
     };
     const req = RxHttpRequest.post(url, options_);
-    return req;
+    return req.timeout(this.TIMEOUT);
   }
 }

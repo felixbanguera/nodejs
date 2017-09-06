@@ -22,7 +22,6 @@ export class Configs {
     Object.entries(this.fp_id).forEach(([k, v]) => {
       this.mix[k].extra = this.fp_hw[v.dev_id];
     })
-    console.log(`this.mixthis.mixthis.mix: ${JSON.stringify(this.mix)}`);
   }
 
   private readJson(URI){

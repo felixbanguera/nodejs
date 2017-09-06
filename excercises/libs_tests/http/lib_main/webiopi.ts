@@ -31,13 +31,11 @@ export class WebIOPi extends HttpComunication{
     var in_out = in_out.toUpperCase();
     return this.POST(this.url, `/devices/${device_name}/${GPIO_ID}/function/${in_out}`, 'POST', null, {});
   }
-  setDevice_GPIO_val(device_name: string, GPIO_ID: number, val: number, callback): void{
+  setDevice_GPIO_val(device_name: string, GPIO_ID: number, val: number): void{
     //example::: /devices/mcp1/0/value/1
     let path = `/devices/${device_name}/${GPIO_ID}/value/${val}`;
-    console.log(`path:::: ${path}`);
-    let req_get = this.request(this.url, path, 'POST', null, callback);
-    req_get.write('');
-    req_get.end();
+    console.log(`path::setDevice_GPIO_val:: ${path}`);
+    return this.POST(this.url, path, 'POST', null, {});
   }
 
 }
