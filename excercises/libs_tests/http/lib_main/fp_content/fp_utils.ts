@@ -35,8 +35,11 @@ export class Utils{
     });
   }
   // To compare statuses
-  compare_n_notify(stored, arrived){
-    var changed = false;
+  compare_n_notify(dev_id,stored, arrived){;
+    console.log(`compare_n_notify:::'stored= ${JSON.stringify(stored)},arrived= ${JSON.stringify(arrived)}`)
+    // stored = JSON.parse(stored);
+    // arrived = JSON.parse(arrived);
+    let changed = false;
     Object.entries(stored).forEach(
       ([pos_id, data]) => {
         if(data.function == 'IN' && (data.value != arrived[pos_id].value)) {
@@ -45,7 +48,7 @@ export class Utils{
         }
       }
     );
-    //if (changed) this.save_new_state(arrived);
+    if (changed) this.save_new_state(dev_id,arrived);
   }
 
   // To change function of GPIO in webiopi
