@@ -1,7 +1,17 @@
 {
   "001": {
     "type": "mcp_expander",
-    "ip": "10.3.9.109",
+    "conn_info": "flx_webiopi",
     "hw_id": "mcp1"
+  },
+  "002": {
+    "type": "mcp_expander",
+    "conn_info": "vero_webiopi",
+    "hw_id": "mcp3"
+  },
+  "003": {
+    "type": "mcp_expander",
+    "conn_info": "vero_webiopi",
+    "hw_id": "mcp4"
   }
 }

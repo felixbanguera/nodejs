@@ -36,9 +36,6 @@ export class Utils{
   }
   // To compare statuses
   compare_n_notify(dev_id,stored, arrived){;
-    console.log(`compare_n_notify:::'stored= ${JSON.stringify(stored)},arrived= ${JSON.stringify(arrived)}`)
-    // stored = JSON.parse(stored);
-    // arrived = JSON.parse(arrived);
     let changed = false;
     Object.entries(stored).forEach(
       ([pos_id, data]) => {
@@ -52,8 +49,8 @@ export class Utils{
   }
 
   // To change function of GPIO in webiopi
-  change_GPIO_fn(device, GPIO, fn){
-    return this.webiopi.setDevice_GPIO_fn(device, GPIO, fn);
+  change_GPIO_fn(device_info, GPIO, fn){
+    return this.webiopi.setDevice_GPIO_fn(device_info, GPIO, fn);
   }
 
   // To save statuses in files corresponding to devices
@@ -70,9 +67,11 @@ export class Utils{
   }
 
   getStatesInHwAndStoredByDevice(dev_id,conf_data){
-    this.webiopi.getDevice_GPIO(conf_data.hw_id)
+    this.webiopi.getDevice_GPIO(conf_data)
     .subscribe((data) => {
       if(data.response.statusCode === 200) this.save_new_state(dev_id, JSON.parse(data.response.body))
+    },(error) => {
+      console.error(`getStatesInHwAndStoredByDevice::ERROR: ${error}`);
     });
   }
 
@@ -80,12 +79,14 @@ export class Utils{
     try{
       var fp_hw = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
       Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
-        this.change_GPIO_fn(conf_data.hw_id, GPIO, status_data.function)
+        this.change_GPIO_fn(conf_data, GPIO, status_data.function)
         .subscribe(() => {
           if(idx === array.length -1){
             this.getStatesInHwAndStoredByDevice(dev_id,conf_data)
           }
-        })
+        },(error) => {
+          console.error(`getPinFuncAndSetupByDevice::ERROR: ${error}`);
+        });
       });
     }catch(e){
       // if(e.include?('ENOENT')){
@@ -106,14 +107,16 @@ export class Utils{
     const dev_conf = this.conf[tr_id];
     const id_conf = dev_conf ? this.getDevStatusFromFile(dev_conf.dev_id)[tr_id] : {};
     if(id_conf.function === "OUT"){
-      this.webiopi.setDevice_GPIO_val(dev_conf.extra.hw_id, dev_conf.dev_pos, value).
-      subscribe((data) => {
+      this.webiopi.setDevice_GPIO_val(dev_conf.extra, dev_conf.dev_pos, value)
+      .subscribe((data) => {
         let data_resp = data.response;
         if(data_resp.body === value && data_resp.statusCode === 200){
           console.info(`Value changed to: ${value}`);
         }else{
           console.info(`Something went wrong: ${JSON.stringify(data_resp)}`);
         }
+      }, (error) => {
+        console.error(`onChangeOutput::ERROR: ${error}`);
       });
     }else{
       console.log(`onChangeOutput:::Something wrong: ${tr_id} - ${ value} - ${dev_conf}`);
@@ -123,6 +126,10 @@ export class Utils{
   // To subscribe to change outputs events
   listenToChangeOutput(){
     this.io.onEvent('chat-message')
-    .subscribe((data) => this.onChangeOutput(data));
+    .subscribe((data) => {
+      this.onChangeOutput(data)
+    }, (error) => {
+      console.error(`onChangeOutput::ERROR: ${error}`);
+    });
   }
 }

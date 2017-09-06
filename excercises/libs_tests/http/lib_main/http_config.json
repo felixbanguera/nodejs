@@ -1,10 +1,18 @@
 {
-  "local_webiopi": {
+  "flx_webiopi": {
     "ip": "10.3.9.109",
     "port": 8000,
     "accepts_methods": ["GET", "POST"],
     "headers": {
       "Authorization": "Basic d2ViaW9waTpyYXNwYmVycnk="
+    }
+  },
+  "vero_webiopi": {
+    "ip": "10.3.9.71",
+    "port": 8000,
+    "accepts_methods": ["GET", "POST"],
+    "headers": {
+      "Authorization": "Basic d2ViaW9waToxMjM0"
     }
   },
   "local_blank_app": {

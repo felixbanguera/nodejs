@@ -69,7 +69,6 @@ export class HttpComunication {
   public POST(conf, path, method, headers, body){
     const options = this.OptsWithConf({conf: conf, path: path, method: method});
     const url = `http://${options.hostname}:${options.port}${options.path}`;
-    console.log(`:;;;;;;;;;;>>>> ${url}`);
     const options_ = {
       body: body,
       json: true,
