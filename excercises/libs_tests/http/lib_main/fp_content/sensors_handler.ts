@@ -22,49 +22,44 @@ export class SensorsHandler {
   getStateArrived(conf_data){
     console.log('body', conf_data.hw_id)
    return this.utils.webiopi.getDevice_GPIO(conf_data.hw_id)
-          .flatMap(({body})=> {
-             console.log('body', body);
+          .map(({body})=> {
            return this.getInputs(JSON.parse(body))
           })
   }
-  // runSensors(devices) {
-  //   devices.map(([key, conf_data]) => {
-  //     const inputsStored= this.getStateStored(key)
-  //     if(inputsStored) {
-  //       const $pinArrived = this.getStateArrived(conf_data)
-  //       this.intervals.push(
-  //         setInterval(() => {
-  //           this.getStatesCompareAndNotify(key,$pinArrived, inputsStored);
-  //         }, 1000)
-  //       );
-  //     }
-  //   });
-  // }
-  runSensors(devices){
-   const $interval =  Observable.interval(500).flatMap((x) => {
-      const a= {hw_id:"mcp1"}
-      return  this.getStateArrived(a)
-   });
-   var subscription = $interval.subscribe(
-     (x) => {
-        console.log('Next: ' + JSON.stringify(x));
-      this.prueba(x);
-    },
-    function (err) {
-        console.log('Error: ' + err);
-    },
-    function () {
-        console.log('Completed');
+  runSensors(devices) {
+    devices.map(([key, conf_data]) => {
+      const inputsStored= this.getStateStored(key)
+      if(inputsStored) {
+        const $pinArrived = this.getStateArrived(conf_data)
+        this.intervals.push(
+          setInterval(() => {
+            this.getStatesCompareAndNotify(key,$pinArrived, inputsStored);
+          }, 1000)
+        );
+      }
     });
   }
-  prueba(x){
-    this.intervals.push(x);
-    console.log('intervals',this.intervals);
-  }
+  // runSensors(devices){
+  //  const $interval =  Observable.interval(500).flatMap((x) => {
+  //     const a= {hw_id:"mcp1"}
+  //     return  this.getStateArrived(a)
+  //  });
+  //  var subscription = $interval.subscribe(
+  //    (x) => {
+  //       console.log('Next: ' + JSON.stringify(x));
+  //   },
+  //   function (err) {
+  //       console.log('Error: ' + err);
+  //   },
+  //   function () {
+  //       console.log('Completed');
+  //   });
+  // }
+
   getInputs(device){
     return Object.entries(device)
                   .filter(([key,data])=>{ 
-                      return data.function || data.functiond === "IN"
+                      return data.function  === "IN"
                     })
   }
 }

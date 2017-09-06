@@ -1,66 +1,66 @@
 {
     "0": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "1": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "2": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "3": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "4": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "5": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "6": {
-        "functiond": "IN",
+        "function": "IN",
         "value": 1
     },
     "7": {
-        "functiond": "IN",
+        "function": "IN",
         "value": 0
     },
     "8": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "9": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "10": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "11": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "12": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "13": {
-        "functiond": "OUT",
+        "function": "OUT",
         "value": 0
     },
     "14": {
-        "functiond": "IN",
+        "function": "IN",
         "value": 0
     },
     "15": {
-        "functiond": "IN",
+        "function": "IN",
         "value": 0
     }
 }
