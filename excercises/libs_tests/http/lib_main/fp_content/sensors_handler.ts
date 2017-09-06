@@ -9,56 +9,46 @@ export class SensorsHandler {
     this.utils = new Utils();
   }
 
-  getStatesCompareAndNotify(key, $pinArrived, pinesStored) {
-     $pinArrived
-      .subscribe(data => {
-        this.utils.compare_n_notify(key, pinesStored, data);
-      });
+  getStatesCompareAndNotify(key, conf_data){
+    const inputsStored = this.getStateStored(key);
+    this.getStateArrived(conf_data)
+    .subscribe(data => {
+      this.utils.compare_n_notify(key, inputsStored, data);
+    });
   }
   getStateStored(key){
     const pinesStored = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${key}.json`, "utf8"));
-    return this.getInputs(pinesStored)
+    return pinesStored;
   }
   getStateArrived(conf_data){
     console.log('body', conf_data.hw_id)
    return this.utils.webiopi.getDevice_GPIO(conf_data.hw_id)
           .map(({body})=> {
-           return this.getInputs(JSON.parse(body))
+           return JSON.parse(body)
           })
   }
-  runSensors(devices) {
+
+  runSensors(devices){
     devices.map(([key, conf_data]) => {
-      const inputsStored= this.getStateStored(key)
+      const inputsStored = this.getInputs(this.getStateStored(key));
       if(inputsStored) {
-        const $pinArrived = this.getStateArrived(conf_data)
-        this.intervals.push(
-          setInterval(() => {
-            this.getStatesCompareAndNotify(key,$pinArrived, inputsStored);
-          }, 1000)
-        );
+        const $interval =  Observable.interval(500);
+        $interval.subscribe((x) => {
+          this.getStatesCompareAndNotify(key, conf_data);
+        },
+        function (err) {
+            console.log('runSensors >> Error: ' + err);
+        },
+        function () {
+            console.log('runSensors >> Completed');
+        });
       }
     });
   }
-  // runSensors(devices){
-  //  const $interval =  Observable.interval(500).flatMap((x) => {
-  //     const a= {hw_id:"mcp1"}
-  //     return  this.getStateArrived(a)
-  //  });
-  //  var subscription = $interval.subscribe(
-  //    (x) => {
-  //       console.log('Next: ' + JSON.stringify(x));
-  //   },
-  //   function (err) {
-  //       console.log('Error: ' + err);
-  //   },
-  //   function () {
-  //       console.log('Completed');
-  //   });
-  // }
 
   getInputs(device){
     return Object.entries(device)
-                  .filter(([key,data])=>{ 
+                  .filter(([key,data])=>{
                       return data.function  === "IN"
                     })
   }
