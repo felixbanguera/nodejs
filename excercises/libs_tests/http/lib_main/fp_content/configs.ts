@@ -12,10 +12,12 @@ export class Configs {
   fp_hw:Array<hw_config>;
   fp_id:Array<id_config>;
   mix:any;
+  existFilesID: string[]; 
   constructor() {
     this.fp_hw = this.readJson('/fp_hw.json');
     this.mix = this.fp_id = this.readJson('/fp_id.json');
     this.mixx();
+    this.setDevIdsExist();
   }
 
   private mixx(){
@@ -26,5 +28,10 @@ export class Configs {
 
   private readJson(URI){
     return JSON.parse(fs.readFileSync(__dirname + URI, 'utf8'));
+  }
+  private setDevIdsExist(){
+    this.existFilesID = Object.entries(this.fp_hw).filter(([key, data])=>{
+      return (fs.existsSync(`${__dirname}/devices_status/${key}.json`));
+    }).map(([key])=> key);
   }
 }

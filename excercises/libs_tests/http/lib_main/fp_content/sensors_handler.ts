@@ -1,4 +1,3 @@
-import  *  as fs from 'fs';
 import {DeviceHandler} from './fp_device_handler.js';
 import { Observable } from "rx";
 export class SensorsHandler {
@@ -18,7 +17,7 @@ export class SensorsHandler {
     });
   }
   getStateStored(key){
-    const pinesStored = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${key}.json`, "utf8"));
+    const pinesStored = this.deviceHanlder.persist.getDevStatusFromFile(key);
     return pinesStored;
   }
   getStateArrived(conf_data){
@@ -31,7 +30,7 @@ export class SensorsHandler {
   runSensors(devices){
     devices.map(([key, conf_data]) => {
       const inputsStored = this.getInputs(this.getStateStored(key));
-      if(inputsStored) {
+      if(inputsStored.length > 0) {
         const $interval =  Observable.interval(500);
         $interval.subscribe((x) => {
           this.getStatesCompareAndNotify(key, conf_data);
