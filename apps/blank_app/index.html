@@ -1,49 +1,117 @@
 <!doctype html>
 <html>
-  <head>
-    <title>BLANK APP</title>
-    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-    <style type="text/css" media="screen">
-       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <script>
-      $(function () {
-        // Connecting to a socket server out of this app:::
-        var socket = io("http://localhost:1111/example_name2");
 
-        // With this function we can now just set one single event for a whole service
-        // Then we can emit and subscribe to any other channel without previous config.
-        var socket_sender = function(event, data){
-          socket.emit('chat-message', {"event": event, "info": data});
+<head>
+  <title>BLANK APP</title>
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+  <style type="text/css" media="screen">
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      font: 13px Helvetica, Arial;
+      width: 100%;
+      height: 100%;
+    }
+
+    .chat-container:nth-child(1) {
+      border-right: 5px solid rgba(0, 0, 0, 0.8);
+    }
+
+    .chat-container {
+      width: 50%;
+      height: 100%;
+      float: left;
+      position: relative;
+    }
+
+    form {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 3px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    form input {
+      border: 0;
+      padding: 10px;
+      width: 90%;
+      /*  margin-right: .5%; */
+    }
+
+    form button {
+      width: 9%;
+      background: rgb(130, 224, 255);
+      border: none;
+      padding: 10px;
+      width: 10%;
+    }
+
+    .messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .messages li {
+      padding: 5px 10px;
+    }
+
+    .messages li:nth-child(odd) {
+      background: #eee;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  <script>
+    $(function () {
+      // load the socket.io-client, which exposes a io global, and then connect.
+      // Notice that I’m not specifying any URL when I call io(), since it defaults to trying to connect to the host that serves the page.
+      var socket = io("http://localhost:1111/namespace1");
+
+      $('form').submit(function () {
+        var num = parseInt(this.dataset.chat);
+        if (num > 1) {
+          socket.emit('event2', $('#m2').val());
+        } else {
+          socket.emit('event1', $('#m1').val());
         }
-
-        $('form').submit(function(){
-          // socket.emit('test_events1', {"event": "test_events_", "info": $('#m').val()});
-          socket_sender("chat-message", $('#m').val());
-          $('#m').val('');
-          return false;
-        });
-
-        // when we capture a chat message event we’ll include it in the page
-        socket.on('chat-message', function(msg){
-          $('#messages').append($('<li>').text(msg));
-        });
+        return false;
       });
-    </script>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+
+      // when we capture a chat message event we’ll include it in the page
+      socket.on('event1', function (msg) {
+        $('#messages1').append($('<li>').text(msg));
+        $('#m1').val('');
+      });
+
+      socket.on('event2', function (msg) {
+        $('#messages2').append($('<li>').text(msg));
+        $('#m2').val('');
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="chat-container">
+    <ul class="messages" id="messages1"></ul>
+    <form action="" data-chat="1">
+      <input id="m1" autocomplete="off" /><button>Send</button>
     </form>
-  </body>
+  </div>
+  <div class="chat-container">
+    <ul class="messages" id="messages2"></ul>
+    <form action="" data-chat="2">
+      <input id="m2" autocomplete="off" /><button>Send</button>
+    </form>
+  </div>
+</body>
+
 </html>

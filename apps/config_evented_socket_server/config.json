@@ -1,9 +1,16 @@
 {
   "namespaces": [
     {
-      "name": "example_name",
+      "name": "namespace1",
       "events": [
-        "chat-message"
+        "event1",
+        "event2"
+      ]
+    },
+    {
+      "name": "namespace2",
+      "events": [
+        "event1"
       ]
     }
   ]
