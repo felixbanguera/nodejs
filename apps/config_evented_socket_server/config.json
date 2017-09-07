@@ -1,7 +1,10 @@
 {
-  "events": [
-    "event_1",
-    "event_2",
-    "chat-message"
+  "namespaces": [
+    {
+      "name": "namespace1",
+      "events": [
+        "chat-message"
+      ]
+    }
   ]
 }
