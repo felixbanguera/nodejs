@@ -14,6 +14,8 @@ export class SensorsHandler {
     this.getStateArrived(conf_data)
     .subscribe(data => {
       this.utils.compare_n_notify(key, inputsStored, data);
+    }, (error) => {
+      console.error(`getStatesCompareAndNotify::ERROR: ${error}`);
     });
   }
   getStateStored(key){
@@ -21,8 +23,7 @@ export class SensorsHandler {
     return pinesStored;
   }
   getStateArrived(conf_data){
-    console.log('body', conf_data.hw_id)
-   return this.utils.webiopi.getDevice_GPIO(conf_data.hw_id)
+    return this.utils.webiopi.getDevice_GPIO(conf_data)
           .map(({body})=> {
            return JSON.parse(body)
           })
