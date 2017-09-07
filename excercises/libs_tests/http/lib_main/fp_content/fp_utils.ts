@@ -80,7 +80,10 @@ export class Utils{
       var fp_hw = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
       Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
         this.change_GPIO_fn(conf_data, GPIO, status_data.function)
-        .subscribe(() => {
+        .subscribe((data_resp) => {
+          if(data_resp.body !== status_data.function){
+            console.info(`In Device ${conf_data.hw_id} and pin ${GPIO} Something went wrong: ${JSON.stringify(data_resp)}`);
+          }
           if(idx === array.length -1){
             this.getStatesInHwAndStoredByDevice(dev_id,conf_data)
           }
