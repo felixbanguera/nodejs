@@ -8,10 +8,11 @@ export class PersistDevice{
   
   // get device status from file
   getDevStatusFromFile(dev_id){
-    console.log(`getDevStatusFromFile:: dev_id ${dev_id}`);
     let statusData = {}
     if(this.conf.existFilesID.some((id) => id=== dev_id)){
       statusData = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
+    }else{
+      console.log(`getDevStatusFromFile:: file for device id ${dev_id} don't exist `);
     }
     return statusData;
   }
