@@ -8,18 +8,18 @@ In this file:
 // To communicate through events???
 import  *  as fs from 'fs';
 
-import {Utils} from './fp_utils.js';
+import {DeviceHandler} from './fp_device_handler.js';
 import {Configs} from './configs.js';
 import {SensorsHandler} from './sensors_handler.js';
 
-const utils = new Utils();
+const deviceHandler = new DeviceHandler();
 
 // Get the devices and config data
 var fp_hw = JSON.parse(fs.readFileSync(__dirname+'/fp_hw.json', 'utf8'));
 
 // *****Configure all devices GPIO*****
 // *****Save all devices statuses*****
-utils.configure_all_devices(Object.entries(fp_hw));
+deviceHandler.configure_all_devices(Object.entries(fp_hw));
 
 // Run sensors validations
 // ++++ create Class InputHandler
@@ -35,7 +35,7 @@ sensorsHandler.runSensors(Object.entries(fp_hw));
 //  ++++++ create method: subcribe_to_change_outputs events
 //        +++++++ Post depending on data received
 //                +++++++ Save new states
-utils.listenToChangeOutput();
+deviceHandler.listenToChangeOutput();
 
 // import {SocketComunication} from '../socket_comm_1.js';
 

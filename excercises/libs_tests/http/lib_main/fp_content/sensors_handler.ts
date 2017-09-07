@@ -1,19 +1,18 @@
 import  *  as fs from 'fs';
-import {Utils} from './fp_utils.js';
+import {DeviceHandler} from './fp_device_handler.js';
 import { Observable } from "rx";
 export class SensorsHandler {
-  utils;
-  intervals: any[] = [];
+  deviceHanlder;
 
   constructor() {
-    this.utils = new Utils();
+    this.deviceHanlder = new DeviceHandler();
   }
 
   getStatesCompareAndNotify(key, conf_data){
     const inputsStored = this.getStateStored(key);
     this.getStateArrived(conf_data)
     .subscribe(data => {
-      this.utils.compare_n_notify(key, inputsStored, data);
+      this.deviceHanlder.compare_n_notify(key, inputsStored, data);
     }, (error) => {
       console.error(`getStatesCompareAndNotify::ERROR: ${error}`);
     });
@@ -23,7 +22,7 @@ export class SensorsHandler {
     return pinesStored;
   }
   getStateArrived(conf_data){
-    return this.utils.webiopi.getDevice_GPIO(conf_data)
+    return this.deviceHanlder.webiopi.getDevice_GPIO(conf_data)
           .map(({body})=> {
            return JSON.parse(body)
           })
@@ -49,8 +48,8 @@ export class SensorsHandler {
 
   getInputs(device){
     return Object.entries(device)
-                  .filter(([key,data])=>{
-                      return data.function  === "IN"
-                    })
+            .filter(([key,data])=>{
+                return data.function  === "IN"
+              })
   }
 }

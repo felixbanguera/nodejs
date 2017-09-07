@@ -20,7 +20,7 @@ interface output{
   tr_id:string,
   value:Number
 }
-export class Utils{
+export class DeviceHandler{
    webiopi; io; conf;
   constructor(){
     this.webiopi = new WebIOPi()
@@ -62,10 +62,6 @@ export class Utils{
     console.log(`${pos_id} has different value, changed to ${value}`);
   }
 
-  basic_callback(status, body){
-    console.log(`Response: status code: ${status} and body: ${body}`);
-  }
-
   getStatesInHwAndStoredByDevice(dev_id,conf_data){
     this.webiopi.getDevice_GPIO(conf_data)
     .subscribe((data) => {
@@ -80,7 +76,10 @@ export class Utils{
       var fp_hw = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
       Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
         this.change_GPIO_fn(conf_data, GPIO, status_data.function)
-        .subscribe(() => {
+        .subscribe((data_resp) => {
+          if(data_resp.body !== status_data.function){
+            console.info(`In Device ${conf_data.hw_id} and pin ${GPIO} Something went wrong: ${JSON.stringify(data_resp)}`);
+          }
           if(idx === array.length -1){
             this.getStatesInHwAndStoredByDevice(dev_id,conf_data)
           }
@@ -92,7 +91,7 @@ export class Utils{
       // if(e.include?('ENOENT')){
       //   console.log(`The device ${dev_id} doesn't have config`);
       // }else{
-        console.log(`\n FP_UTILS::configure_all_devices::${dev_id} - Error>>${e}`);
+        console.log(`\n FP_DEVICE_HANDLER::configure_all_devices::${dev_id} - Error>>${e}`);
       // }
     }
   }
