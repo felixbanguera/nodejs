@@ -23,14 +23,17 @@ io.on('connection', function(socket){
   config.events.forEach(function(event){
     console.log("will initialize event:", event);
     socket.on(event, function(data){
-      console.log('message: ' + data);
+      console.log('message: ' + JSON.stringify(data));
       if(data.event){
+        console.log(`EMITTING SUB EVENT: ${data.event}`);
         io.emit(data.event, data.info);
       }else{
         io.emit(event, data);
       }
     });
   });
+
+  socket.on('input_8_changed', (data)=> console.log(`received inner input_8_changed`));
 
 
   // // send the message to everyone, including the sender.

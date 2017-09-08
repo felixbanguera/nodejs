@@ -1,6 +1,6 @@
 {
   "events": [
-    "test_events1",
+    "device_test",
     "test_events2",
     "chat-message"
   ]
