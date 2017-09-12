@@ -17,7 +17,7 @@ export class SensorsHandler {
     });
   }
   getStateStored(key){
-    const pinesStored = this.deviceHanlder.persist.getDevStatusFromFile(key);
+    const pinesStored = this.deviceHanlder.persist.getDevAllStatus(key);
     return pinesStored;
   }
   getStateArrived(conf_data){

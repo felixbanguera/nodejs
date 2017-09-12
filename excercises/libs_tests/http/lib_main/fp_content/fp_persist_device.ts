@@ -6,20 +6,23 @@ export class PersistDevice{
      this.conf = new Configs();
   }
   
-  // get device status from file
-  getDevStatusFromFile(dev_id){
+  // get device all  status from file
+  getDevAllStatus(dev_id){
     let statusData = {}
-    if(this.conf.existFilesID.some((id) => id=== dev_id)){
-      statusData = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
+    if(Object.entries(this.conf.existFilesID).some(([devId, configData]) => devId === dev_id)){
+
+      statusData =  this.conf.existFilesID[dev_id].getState();
     }else{
-      console.log(`getDevStatusFromFile:: file for device id ${dev_id} don't exist `);
+      console.log(`getDevAllStatus:: file for device id ${dev_id} don't exist `);
     }
     return statusData;
   }
 
   save_new_state(dev_id, newData){
-    fs.writeFile(`${__dirname}/devices_status/${dev_id}.json`, JSON.stringify(newData, null, 4),
-    (err)=> console.log(err));
+    console.log('save_new_state');
+    this.conf.existFilesID[dev_id].setState(newData).write();
+    // fs.writeFile(`${__dirname}/devices_status/${dev_id}.json`, JSON.stringify(newData, null, 4),
+    // (err)=> console.log(err));
   }
   
 }
