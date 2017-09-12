@@ -11,12 +11,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/lowdb": "^0.15.0",
     "@types/node": "^8.0.26",
     "@types/rx": "^4.1.1",
     "cpy-cli": "^1.0.1",
     "typescript": "^2.4.2"
   },
   "dependencies": {
+    "lowdb": "^1.0.0",
     "rx": "^4.1.0",
     "rx-http-request": "^1.2.0",
     "socket.io-client": "^2.0.3"

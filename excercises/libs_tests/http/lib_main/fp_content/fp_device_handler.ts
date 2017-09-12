@@ -72,7 +72,7 @@ export class DeviceHandler{
 
   getPinFuncAndSetupByDevice(dev_id,conf_data ){
     try{
-      var fp_hw = this.persist.getDevStatusFromFile(dev_id); 
+      var fp_hw = this.persist.getDevAllStatus(dev_id); 
       Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
         this.change_GPIO_fn(conf_data, GPIO, status_data.function)
         .subscribe((data_resp) => {
@@ -100,7 +100,7 @@ export class DeviceHandler{
   onChangeOutput(data){
     const {tr_id, value}:output = JSON.parse(data);
     const dev_conf = this.conf[tr_id];
-    const id_conf = dev_conf ? this.persist.getDevStatusFromFile(dev_conf.dev_id)[tr_id] : {};
+    const id_conf = dev_conf ? this.persist.getDevAllStatus(dev_conf.dev_id)[tr_id] : {};
     if(id_conf.function === "OUT"){
       this.webiopi.setDevice_GPIO_val(dev_conf.extra, dev_conf.dev_pos, value)
       .subscribe((data) => {
