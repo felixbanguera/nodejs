@@ -10,7 +10,7 @@ import  *  as fs from 'fs';
 import { WebIOPi }   from '../webiopi.js';
 import {SocketComunication} from '../socket_comm_1.js';
 import {Configs} from './configs.js';
-
+import {PersistDevice} from './fp_persist_device.js';
 interface ConfigData{
   type: string,
   ip: string,
@@ -20,12 +20,13 @@ interface output{
   tr_id:string,
   value:Number
 }
-export class Utils{
-   webiopi; io; conf;
+export class DeviceHandler{
+   webiopi; io; conf; persist;
   constructor(){
     this.webiopi = new WebIOPi()
     this.io = new SocketComunication();
     this.conf = new Configs().mix;
+    this.persist = new PersistDevice();
   }
   // To start configuring all devices
   configure_all_devices(devices): void{
@@ -45,7 +46,7 @@ export class Utils{
         }
       }
     );
-    if (changed) this.save_new_state(dev_id,arrived);
+    if (changed) this.persist.save_new_state(dev_id,arrived);
   }
 
   // To change function of GPIO in webiopi
@@ -54,22 +55,16 @@ export class Utils{
   }
 
   // To save statuses in files corresponding to devices
-  save_new_state(dev_id, new_json){
-    fs.writeFile(`${__dirname}/devices_status/${dev_id}.json`, JSON.stringify(new_json, null, 4),(err)=> console.log(err));
-  }
+  
   // To notify changes to any sucribed service
   notify_in_changed(pos_id, value){
     console.log(`${pos_id} has different value, changed to ${value}`);
   }
 
-  basic_callback(status, body){
-    console.log(`Response: status code: ${status} and body: ${body}`);
-  }
-
   getStatesInHwAndStoredByDevice(dev_id,conf_data){
     this.webiopi.getDevice_GPIO(conf_data)
     .subscribe((data) => {
-      if(data.response.statusCode === 200) this.save_new_state(dev_id, JSON.parse(data.response.body))
+      if(data.response.statusCode === 200) this.persist.save_new_state(dev_id, JSON.parse(data.response.body))
     },(error) => {
       console.error(`getStatesInHwAndStoredByDevice::ERROR: ${error}`);
     });
@@ -77,7 +72,7 @@ export class Utils{
 
   getPinFuncAndSetupByDevice(dev_id,conf_data ){
     try{
-      var fp_hw = JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
+      var fp_hw = this.persist.getDevStatusFromFile(dev_id); 
       Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
         this.change_GPIO_fn(conf_data, GPIO, status_data.function)
         .subscribe((data_resp) => {
@@ -95,20 +90,17 @@ export class Utils{
       // if(e.include?('ENOENT')){
       //   console.log(`The device ${dev_id} doesn't have config`);
       // }else{
-        console.log(`\n FP_UTILS::configure_all_devices::${dev_id} - Error>>${e}`);
+        console.log(`\n FP_DEVICE_HANDLER::configure_all_devices::${dev_id} - Error>>${e}`);
       // }
     }
   }
-  // get device status from file
-  getDevStatusFromFile(dev_id){
-    return JSON.parse(fs.readFileSync(`${__dirname}/devices_status/${dev_id}.json`, 'utf8'));
-  }
+
 
   // data should come as a stringified JSON
   onChangeOutput(data){
     const {tr_id, value}:output = JSON.parse(data);
     const dev_conf = this.conf[tr_id];
-    const id_conf = dev_conf ? this.getDevStatusFromFile(dev_conf.dev_id)[tr_id] : {};
+    const id_conf = dev_conf ? this.persist.getDevStatusFromFile(dev_conf.dev_id)[tr_id] : {};
     if(id_conf.function === "OUT"){
       this.webiopi.setDevice_GPIO_val(dev_conf.extra, dev_conf.dev_pos, value)
       .subscribe((data) => {
