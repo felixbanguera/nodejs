@@ -10,7 +10,7 @@ export class PersistDevice{
   getDevAllStatus(dev_id){
     let statusData = {}
     if(Object.entries(this.conf.dbConnIDs).some(([devId, configData]) => devId === dev_id)){
-      statusData =  this.conf.dbConnIDs[dev_id].getState();
+      statusData =  this.conf.dbConnIDs[dev_id] && this.conf.dbConnIDs[dev_id].getState();
     }else{
       console.log(`getDevAllStatus:: file for device id ${dev_id} don't exist `);
     }
@@ -18,7 +18,7 @@ export class PersistDevice{
   }
 
   save_new_state(dev_id, newData){
-    this.conf.dbConnIDs[dev_id].setState(newData).write();
+    this.conf.dbConnIDs[dev_id] && this.conf.dbConnIDs[dev_id].setState(newData).write();
   }
   
 }
