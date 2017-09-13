@@ -64,7 +64,7 @@ export class DeviceHandler{
       // console.log(`vvvv: ${dev_id} --- ${dev_pos}`);
       return dev_id_in === dev_id && dev_pos === pos_id;
     })[0];
-    if(tr_id) this.io.send('input_change', {"tr_id": tr_id[0], "value": value});
+    if(tr_id) this.io.send('input_changed', {event: `input_changed_${tr_id[0]}`, info:{"tr_id": tr_id[0], "value": value}});
   }
 
   getStatesInHwAndStoredByDevice(dev_id,conf_data){
@@ -104,7 +104,7 @@ export class DeviceHandler{
 
   // data should come as a stringified JSON
   onChangeOutput(data){
-    const {tr_id, value}:output = JSON.parse(data);
+    const {tr_id, value}:any  = data;
     const dev_conf = this.conf[tr_id];
     const id_conf = dev_conf ? this.persist.getDevAllStatus(dev_conf.dev_id)[tr_id] : {};
     if(id_conf.function === "OUT"){
@@ -113,6 +113,7 @@ export class DeviceHandler{
         let data_resp = data.response;
         if(data_resp.body === value && data_resp.statusCode === 200){
           console.info(`Value changed to: ${value}`);
+          this.persist.save_change_pin(dev_conf.dev_id, dev_conf.dev_pos, value)
         }else{
           console.info(`Something went wrong: ${JSON.stringify(data_resp)}`);
         }

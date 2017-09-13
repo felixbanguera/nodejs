@@ -2,7 +2,7 @@
   "events": [
     "device_test",
     "output_change",
-    "input_change",
+    "input_changed",
     "chat_message"
   ]
 }

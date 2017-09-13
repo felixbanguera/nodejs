@@ -20,5 +20,7 @@ export class PersistDevice{
   save_new_state(dev_id, newData){
     this.conf.dbConnIDs[dev_id] && this.conf.dbConnIDs[dev_id].setState(newData).write();
   }
-  
+  save_change_pin(dev_id, pin, value){
+    this.conf.dbConnIDs[dev_id] && this.conf.dbConnIDs[dev_id].set(`${pin}.value`, value ).write();
+  }
 }

@@ -8,7 +8,7 @@
     }
   },
   "vero_webiopi": {
-    "ip": "10.3.9.65",
+    "ip": "10.3.9.165",
     "port": 8000,
     "accepts_methods": ["GET", "POST"],
     "headers": {
