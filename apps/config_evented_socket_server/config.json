@@ -1,7 +1,8 @@
 {
   "events": [
-    "event_1",
-    "event_2",
-    "chat-message"
+    "device_test",
+    "output_change",
+    "input_change",
+    "chat_message"
   ]
 }

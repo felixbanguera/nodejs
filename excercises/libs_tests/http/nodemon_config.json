@@ -1,0 +1,5 @@
+{
+  "ignore": [
+    "dist/fp_content/devices_status/*"
+  ]
+}

@@ -16,15 +16,19 @@ var config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 console.log("config", config.events);
 
 io.on('connection', function(socket){
-  console.log('A user connected????');
+  console.log('A connection  on socket server');
   config.events.forEach(function(event){
     console.log("will initialize event:", event);
     socket.on(event, function(data){
-      console.log('message: ' + data);
-      io.emit(event, data);
+      console.log('message: ' + JSON.stringify(data));
+      if(data.event){
+        console.log(`EMITTING SUB EVENT: ${data.event}`);
+        io.emit(data.event, data.info);
+      }else{
+        io.emit(event, data);
+      }
     });
   });
-
 
   // // send the message to everyone, including the sender.
   socket.on('disconnect', function(){
