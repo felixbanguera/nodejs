@@ -5,6 +5,8 @@ interface config{
   ip:string,
   port: number,
   accepts_methods: string[],
+  username: string,
+  password: string,
   headers?: any
 }
 
@@ -53,7 +55,12 @@ export class HttpComunication {
     const conf : config = this.config[args.conf];
     if(!conf) throw `no valid config param: ${args.conf}`;
     const method : string = args.method ? args.method : '';
-    const headers : any  = args.headers ? args.headers : conf.headers;
+    let headers : any  = args.headers ? args.headers : conf.headers;
+    
+    if(conf.username && conf.password){
+      const authCode = new Buffer(conf.username + ':' + conf.password).toString('base64')
+      headers = {...headers, ...{ Authorization: `Basic ${ authCode}`} }
+    }
     return this.CreateOptions(conf.ip, conf.port, args.path, method, headers);
   }
   // This method to return an observable using the rx-http-request from: rx-http-request

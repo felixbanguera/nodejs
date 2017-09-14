@@ -3,16 +3,18 @@
     "ip": "10.3.9.109",
     "port": 8000,
     "accepts_methods": ["GET", "POST"],
+    "username": "webiopi",
+    "password": "raspberry",
     "headers": {
-      "Authorization": "Basic d2ViaW9waTpyYXNwYmVycnk="
     }
   },
   "vero_webiopi": {
     "ip": "10.3.9.165",
     "port": 8000,
     "accepts_methods": ["GET", "POST"],
-    "headers": {
-      "Authorization": "Basic d2ViaW9waToxMjM0"
+    "username": "webiopi",
+    "password": "1234",
+     "headers": {
     }
   },
   "local_blank_app": {
