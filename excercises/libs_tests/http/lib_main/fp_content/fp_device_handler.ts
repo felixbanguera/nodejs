@@ -41,7 +41,7 @@ export class DeviceHandler{
     Object.entries(stored).forEach(
       ([pos_id, data]) => {
         if(data.function == 'IN' && (data.value != arrived[pos_id].value)) {
-          this.notify_in_changed(pos_id, arrived[pos_id].value);
+          this.notify_in_changed(dev_id, pos_id, arrived[pos_id].value);
           changed = true;
         }
       }
@@ -55,10 +55,16 @@ export class DeviceHandler{
   }
 
   // To save statuses in files corresponding to devices
-  
+
   // To notify changes to any sucribed service
-  notify_in_changed(pos_id, value){
+  notify_in_changed(dev_id_in, pos_id, value){
     console.log(`${pos_id} has different value, changed to ${value}`);
+    let tr_id = Object.entries(this.conf).filter(([k, {dev_id, dev_pos}]) => {
+
+      // console.log(`vvvv: ${dev_id} --- ${dev_pos}`);
+      return dev_id_in === dev_id && dev_pos === pos_id;
+    })[0];
+    if(tr_id) this.io.send('input_changed', {event: `input_changed_${tr_id[0]}`, info:{"tr_id": tr_id[0], "value": value}});
   }
 
   getStatesInHwAndStoredByDevice(dev_id,conf_data){
@@ -72,7 +78,7 @@ export class DeviceHandler{
 
   getPinFuncAndSetupByDevice(dev_id,conf_data ){
     try{
-      var fp_hw = this.persist.getDevAllStatus(dev_id); 
+      var fp_hw = this.persist.getDevAllStatus(dev_id);
       Object.entries(fp_hw).forEach(([GPIO, status_data], idx, array) => {
         this.change_GPIO_fn(conf_data, GPIO, status_data.function)
         .subscribe((data_resp) => {
@@ -98,7 +104,7 @@ export class DeviceHandler{
 
   // data should come as a stringified JSON
   onChangeOutput(data){
-    const {tr_id, value}:output = JSON.parse(data);
+    const {tr_id, value}:any  = data;
     const dev_conf = this.conf[tr_id];
     const id_conf = dev_conf ? this.persist.getDevAllStatus(dev_conf.dev_id)[tr_id] : {};
     if(id_conf.function === "OUT"){
@@ -107,6 +113,7 @@ export class DeviceHandler{
         let data_resp = data.response;
         if(data_resp.body === value && data_resp.statusCode === 200){
           console.info(`Value changed to: ${value}`);
+          this.persist.save_change_pin(dev_conf.dev_id, dev_conf.dev_pos, value)
         }else{
           console.info(`Something went wrong: ${JSON.stringify(data_resp)}`);
         }
@@ -120,7 +127,7 @@ export class DeviceHandler{
 
   // To subscribe to change outputs events
   listenToChangeOutput(){
-    this.io.onEvent('chat-message')
+    this.io.onEvent('output_change')
     .subscribe((data) => {
       this.onChangeOutput(data)
     }, (error) => {
