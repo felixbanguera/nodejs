@@ -3,12 +3,26 @@
   "version": "0.0.1",
   "description": "Unit testing with Mocha, Sinon and Chai",
   "scripts": {
-    "test": "mocha"
+    "compile": "node_modules/.bin/tsc",
+    "test": "mocha -r ts-node/register test/*.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "rx": "^4.1.0",
+    "rx-http-request": "^1.2.0",
+    "socket.io-client": "^2.0.3"
+  },
   "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.43",
+    "@types/node": "^8.0.26",
+    "@types/reflect-metadata": "0.0.5",
+    "@types/rx": "^4.1.1",
     "chai": "^4.1.2",
     "mocha": "^3.5.3",
-    "sinon": "^3.3.0"
+    "reflect-metadata": "^0.1.10",
+    "sinon": "^3.3.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.4.2",
+    "typings": "^2.1.1"
   }
 }
