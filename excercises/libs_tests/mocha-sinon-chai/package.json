@@ -4,7 +4,9 @@
   "description": "Unit testing with Mocha, Sinon and Chai",
   "scripts": {
     "compile": "node_modules/.bin/tsc",
-    "test": "mocha -r ts-node/register test/*.ts"
+    "test": "mocha -r ts-node/register test/*.ts",
+    "test_js": "mocha",
+    "hw": "echo 'Hello Veronica-s world'"
   },
   "dependencies": {
     "rx": "^4.1.0",
