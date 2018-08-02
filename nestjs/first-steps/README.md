@@ -8,9 +8,21 @@ https://docs.nestjs.com/first-steps
 
 At the moment of this commit the versions are:
 
-npm: 5.6.0
-node: v8.11.3
-nest-cli: 5.3.0
+ _   _             _      ___  _____  _____  _     _____
+| \ | |           | |    |_  |/  ___|/  __ \| |   |_   _|
+|  \| |  ___  ___ | |_     | |\ `--. | /  \/| |     | |
+| . ` | / _ \/ __|| __|    | | `--. \| |    | |     | |
+| |\  ||  __/\__ \| |_ /\__/ //\__/ /| \__/\| |_____| |_
+\_| \_/ \___||___/ \__|\____/ \____/  \____/\_____/\___/
+
+
+[System Information]
+OS Version     : OS X El Capitan
+NodeJS Version : v8.11.3
+NPM Version    : 5.6.0
+[Nest Information]
+common version : 5.0.0
+core version   : 5.0.0
 
 ## Installation
 
