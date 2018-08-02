@@ -1,0 +1,1 @@
+This folder will contain excercises and projects using NestJS framework.

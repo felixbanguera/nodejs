@@ -1,0 +1,17 @@
+{
+  "001": {
+    "type": "mcp_expander",
+    "conn_info": "flx_webiopi",
+    "hw_id": "mcp1"
+  },
+  "002": {
+    "type": "mcp_expander",
+    "conn_info": "vero_webiopi",
+    "hw_id": "mcp3"
+  },
+  "003": {
+    "type": "mcp_expander",
+    "conn_info": "vero_webiopi",
+    "hw_id": "mcp4"
+  }
+}

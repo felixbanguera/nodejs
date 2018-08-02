@@ -1,0 +1,6 @@
+{
+  "local_socket_server": {
+    "ip": "10.3.9.23",
+    "port": 3333
+  }
+}
