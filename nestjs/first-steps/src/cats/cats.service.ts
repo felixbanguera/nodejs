@@ -8,10 +8,12 @@ export class CatsService {
   private readonly cats: Cat[] = [];
 
   create(cat: Cat) {
+    console.log(`creating a Cat:`, cat);
     this.cats.push(cat);
   }
 
   findAll(): Cat[] {
+    console.log(`Finding ALL  Cats`);
     return this.cats;
   }
 }
