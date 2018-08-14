@@ -1,7 +1,15 @@
 import { Controller, Get, Req, Param, Post, HttpCode, Header, Body } from '@nestjs/common';
+import { CreateCatDto } from './dto/create-cat.dto';
+import { CatsService } from './cats.service';
+import { Cat } from './interfaces/cat.interface';
 
 @Controller('cats')
 export class CatsController {
+  /**
+   * Constructor to iject dependencies
+   * @param catsService to be used for handling different stuff from http requests.
+   */
+  constructor(private readonly catsService: CatsService) {}
   /*
   * The following is a basic Get controller with no parameters
   * as no parameter is passed to the @Get decorator the the route
@@ -11,8 +19,8 @@ export class CatsController {
   * Remember to import them from @nestjs/common
   */
   @Get()
-  findAll(@Req() request) {
-    return 'This action returns all cats';
+  async findAll(): Promise<Cat[]> {
+    return this.catsService.findAll();
   }
 
   /*
@@ -35,7 +43,7 @@ export class CatsController {
   @Post()
   @HttpCode(201)
   @Header('Cache-Control', 'none')
-  create(@Body() args) {
-    return args;
+  async create(@Body() createCatDto: CreateCatDto) {
+    this.catsService.create(createCatDto);
   }
 }
