@@ -4,6 +4,6 @@
   "description": "Blank node app to test other features",
   "dependencies": {
     "express": "^4.15.4",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.4.0"
   }
 }
